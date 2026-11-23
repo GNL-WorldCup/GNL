@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GNL World Cup</title>
+<meta name="description" content="Global Nations League — the World Cup of Ragdoll Soccer. 32 nations, 8 groups, one trophy.">
+<meta name="theme-color" content="#d7192d">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Archivo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE: a printed World Cup wallchart — bold, festive, organised
+   IDEA: the tournament poster you pin on your wall: draw, groups, fixtures, bracket
+   PICTURE: a gold cup over a pitch, with all 32 flags parading underneath
+   COLOUR and TYPE: white paper, tournament red, pitch green, trophy gold; Big Shoulders Display + Archivo
+   LAYOUT: red masthead → poster hero with countdown → groups → matchday → bracket → prizes → nations → rules */
+:root{color-scheme:light dark;
+--paper:light-dark(#ffffff,#101114);--paper2:light-dark(#f3f4f6,#181a1f);--ink:light-dark(#111216,#f2f3f5);--mute:light-dark(#5b6070,#a5a9b5);
+--line:light-dark(#e3e5ea,#2a2d35);--red:#d7192d;--red2:#a70f20;--green:#0f7a3d;--green2:#0b5e2f;--gold:#c99a1e;--gold2:#f0c64a}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important}}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Archivo,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:"Big Shoulders Display",Impact,sans-serif;font-weight:900;line-height:1;margin:0;text-transform:uppercase;letter-spacing:.01em;text-wrap:balance}
+h2{font-size:clamp(40px,6vw,64px)}h3{font-size:24px}
+a{color:inherit}
+.wrap{max-width:1240px;margin:0 auto}
+.band{padding:clamp(44px,6vw,84px) max(5vw,16px)}
+.kick{display:inline-block;font:800 13px Archivo,sans-serif;color:var(--red);margin-bottom:10px}
+.lede{color:var(--mute);max-width:64ch;margin:12px 0 0;font-size:17px}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 22px;font:800 15px Archivo,sans-serif;text-decoration:none;border:2px solid currentColor;border-radius:4px;cursor:pointer}
+.btn.fill{background:#fff;color:var(--red);border-color:#fff}
+.btn:focus-visible,a:focus-visible,button:focus-visible{outline:3px solid var(--gold2);outline-offset:3px}
+/* masthead */
+.mast{position:sticky;top:0;z-index:30;background:var(--red);color:#fff}
+.mast .wrap{display:flex;align-items:center;gap:16px;padding:10px max(5vw,16px);flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font:900 26px "Big Shoulders Display",sans-serif;letter-spacing:.04em}
+.logo svg{width:34px;height:34px}
+.nav{display:flex;gap:2px;margin-left:auto;flex-wrap:wrap}
+.nav a{padding:8px 11px;text-decoration:none;font-weight:700;font-size:14px;border-radius:4px}
+.nav a:hover{background:rgba(0,0,0,.18)}
+.nav a.join{background:#fff;color:var(--red)}
+.visits{display:flex;align-items:center;padding:4px 8px;border-radius:6px;background:rgba(0,0,0,.2)}.visits img{height:20px;display:block}.visits[hidden]{display:none}
+/* hero */
+.hero{background:var(--green);color:#fff;position:relative;overflow:hidden;text-align:center}
+.hero::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.06) 0 90px,transparent 90px 180px)}
+.hero::after{content:"";position:absolute;left:50%;top:58%;width:min(70vw,620px);aspect-ratio:1;border:3px solid rgba(255,255,255,.18);border-radius:50%;transform:translate(-50%,-50%)}
+.hero .wrap{position:relative;z-index:1;padding:clamp(28px,4vw,48px) max(5vw,16px) 0}
+.season{display:inline-flex;gap:8px;align-items:center;background:rgba(0,0,0,.25);padding:6px 14px;border-radius:99px;font-weight:700;font-size:14px}
+.season b{color:var(--gold2)}
+.hero h1{font-size:clamp(64px,13vw,168px);line-height:.86;margin-top:18px}
+.hero h1 span{display:block;color:var(--gold2)}
+.hero .sub{font-size:clamp(17px,2vw,21px);max-width:44ch;margin:18px auto 0;opacity:.95}
+.cupwrap{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:end;gap:clamp(10px,3vw,40px);margin-top:20px}
+.cup{width:clamp(150px,22vw,250px);aspect-ratio:3/4;filter:drop-shadow(0 18px 30px rgba(0,0,0,.35))}
+.cup svg{width:100%;height:100%}
+.stat{display:grid;gap:12px;padding-bottom:30px}
+.stat div{background:rgba(0,0,0,.22);border-radius:8px;padding:12px 14px}
+.stat b{display:block;font:900 clamp(30px,4vw,44px)/1 "Big Shoulders Display",sans-serif;color:var(--gold2)}
+.stat small{font-size:14px;opacity:.9}
+.count{display:flex;justify-content:center;gap:clamp(8px,2vw,16px);margin:26px 0 8px;flex-wrap:wrap}
+.count div{background:#fff;color:var(--ink);border-radius:8px;min-width:84px;padding:10px 12px 8px}
+.count b{display:block;font:900 clamp(34px,5vw,52px)/1 "Big Shoulders Display",sans-serif;color:var(--red);font-variant-numeric:tabular-nums}
+.count small{font-weight:700;font-size:13px;color:#5b6070}
+.countlbl{font-weight:700;font-size:15px;margin-top:18px}
+.ctas{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:24px 0 30px}
+.parade{position:relative;z-index:1;background:#fff;padding:12px 0;overflow:hidden}
+.parade .track{display:flex;gap:14px;width:max-content;animation:parade 60s linear infinite}
+.parade .track span{display:flex;align-items:center;gap:8px;font:800 13px Archivo,sans-serif;color:#111216;white-space:nowrap}
+@keyframes parade{to{transform:translateX(-50%)}}
+.flag{display:inline-block;width:30px;height:20px;border-radius:3px;overflow:hidden;flex:none;box-shadow:0 0 0 1px rgba(0,0,0,.12)}
+.flag svg{display:block;width:100%;height:100%}
+.flag.lg{width:42px;height:28px}
+/* groups */
+.groups{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:16px;margin-top:30px}
+.grp{border:2px solid var(--ink);border-radius:8px;overflow:hidden;background:var(--paper)}
+.grp header{display:flex;justify-content:space-between;align-items:center;background:var(--ink);color:var(--paper);padding:8px 14px}
+.grp header h3{font-size:22px}
+.grp header b{font:900 40px/1 "Big Shoulders Display",sans-serif;color:var(--gold2)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{font-size:12px;color:var(--mute);font-weight:700;text-align:right;padding:6px 8px;border-bottom:1px solid var(--line)}
+td{padding:8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+th:first-child,td:first-child{text-align:left;white-space:normal}
+td .nat{display:flex;align-items:center;gap:8px;font-weight:700}
+td .nat small{display:block;font-weight:500;color:var(--mute);font-size:12px}
+tbody tr:nth-child(-n+2) td:first-child{box-shadow:inset 4px 0 0 var(--green)}
+td.pts{font-weight:800}
+.legend{display:flex;align-items:center;gap:8px;color:var(--mute);font-size:14px;margin-top:14px}
+.legend i{width:14px;height:14px;background:var(--green);border-radius:3px}
+/* matchday */
+.md{background:var(--paper2)}
+.daytabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}
+.daytabs button{min-height:44px;padding:0 18px;border:2px solid var(--ink);background:transparent;color:var(--ink);font:800 15px Archivo,sans-serif;border-radius:4px;cursor:pointer}
+.daytabs button[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+.list{margin-top:18px;border-top:2px solid var(--ink)}
+.row{display:grid;grid-template-columns:96px 64px minmax(0,1fr) auto minmax(0,1fr) 120px;align-items:center;gap:12px;padding:14px 4px;border-bottom:1px solid var(--line)}
+.row .t{font:900 34px/1 "Big Shoulders Display",sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
+.row .g{font:800 13px Archivo,sans-serif;background:var(--ink);color:var(--paper);border-radius:4px;padding:4px 8px;text-align:center;white-space:nowrap}
+.row .side{display:flex;align-items:center;gap:10px;font-weight:800}
+.row .side.r{justify-content:flex-end;text-align:right}
+.row .v{font:900 20px "Big Shoulders Display",sans-serif;color:var(--mute)}
+.live{justify-self:end;display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:13px;color:var(--red);white-space:nowrap}
+.live::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--red);animation:pulse 1.4s infinite}
+.nolive{justify-self:end;font-size:13px;color:var(--mute);white-space:nowrap}
+@keyframes pulse{50%{opacity:.25}}
+.tz{color:var(--mute);font-size:14px;margin-top:12px}
+/* bracket */
+.bracket{display:grid;grid-template-columns:repeat(4,minmax(170px,1fr));gap:18px;margin-top:30px;overflow-x:auto;padding-bottom:8px}
+.round h3{font-size:20px;margin-bottom:10px;color:var(--red)}
+.round .slots{display:flex;flex-direction:column;justify-content:space-around;gap:12px;height:100%;min-height:560px}
+.tie{border:2px solid var(--ink);border-radius:6px;background:var(--paper)}
+.tie div{padding:8px 10px;font-weight:700;font-size:14px;display:flex;justify-content:space-between;gap:8px}
+.tie div+div{border-top:1px solid var(--line)}
+.tie em{font-style:normal;color:var(--mute);font-weight:500}
+.final .tie{border-color:var(--gold);box-shadow:0 0 0 4px rgba(201,154,30,.18)}
+.final .cupmini{width:70px;margin:0 auto 10px}
+/* prizes */
+.prizes{background:var(--red);color:#fff}
+.prizes .lede{color:rgba(255,255,255,.85)}
+.podium{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:end;gap:12px;margin-top:34px}
+.step{background:rgba(0,0,0,.22);border-radius:8px 8px 0 0;padding:18px 14px;text-align:center}
+.step b{display:block;font:900 clamp(34px,5vw,58px)/1 "Big Shoulders Display",sans-serif}
+.step span{display:block;font-weight:800;margin-top:6px}
+.step small{opacity:.85}
+.step.p1{min-height:260px;background:var(--gold);color:#1a1300}.step.p2{min-height:210px}.step.p3{min-height:170px}.step.p4{min-height:140px}
+.awards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:12px;margin-top:22px}
+.awards div{border:2px solid rgba(255,255,255,.35);border-radius:8px;padding:14px 16px}
+/* nations */
+.confs{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr));gap:18px;margin-top:28px}
+.conf h3{border-bottom:3px solid var(--ink);padding-bottom:6px;margin-bottom:6px;display:flex;justify-content:space-between}
+.conf h3 small{font:700 14px Archivo,sans-serif;color:var(--mute);text-transform:none}
+.conf li{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line)}
+.conf li b{flex:1}
+.conf li small{color:var(--mute);font-size:13px;text-align:right}
+.conf ul{list-style:none;margin:0;padding:0}
+/* rules */
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:18px;margin-top:28px}
+.card{border:2px solid var(--ink);border-radius:8px;padding:18px 20px}
+.card h3{margin-bottom:8px}
+.card ul,.card ol{margin:0;padding-left:20px;color:var(--mute)}.card li{margin:5px 0}
+.card li b{color:var(--ink)}
+.join{background:var(--ink);color:var(--paper)}
+.join .lede{color:var(--mute)}
+.join .cols .card{border-color:var(--line)}
+footer{background:var(--red2);color:#fff}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center;padding:24px max(5vw,16px)}
+footer small{opacity:.8}
+@media(max-width:860px){.cupwrap{grid-template-columns:1fr}.stat{grid-template-columns:repeat(2,minmax(0,1fr));padding-bottom:0;order:2}.cup{margin:0 auto}
+ .row{grid-template-columns:70px minmax(0,1fr) auto minmax(0,1fr);row-gap:6px}.row .t{font-size:26px}.row .g{grid-column:1;grid-row:2}.row .live,.row .nolive{grid-column:2/5;grid-row:2;justify-self:start}
+ .podium{grid-template-columns:repeat(2,minmax(0,1fr))}.step{border-radius:8px}.step.p1,.step.p2,.step.p3,.step.p4{min-height:0}}
+@media(max-width:600px){.nav{width:100%;margin-left:0;overflow-x:auto;flex-wrap:nowrap}.nav a{flex:none}.nav{scrollbar-width:none}.season{font-size:12px;flex-wrap:wrap;justify-content:center}.row .side{font-size:14px;gap:6px}.row .side .flag{width:24px;height:16px}}
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <a class="logo" href="#top"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#fff"/><circle cx="20" cy="20" r="14" fill="none" stroke="#d7192d" stroke-width="3"/><path d="M6 20h28M20 6c-6 8-6 20 0 28M20 6c6 8 6 20 0 28" fill="none" stroke="#d7192d" stroke-width="2.4"/></svg>GNL</a>
+    <nav class="nav">
+      <a href="#groups">Groups</a>
+      <a href="#matches">Matches</a>
+      <a href="#knockout">Knockout</a>
+      <a href="#prizes">Prizes</a>
+      <a href="#nations">Nations</a>
+      <a href="#rules">Rules</a>
+      <a class="join" href="https://discord.gg/EQSp8vM7q">Join Discord</a>
+    </nav>
+    <span class="visits" id="visits" hidden></span>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="wrap">
+    <span class="season">Global Nations League · <b>World Cup Season 0</b></span>
+    <h1>Global Nations<span>World Cup</span></h1>
+    <p class="sub">Pick your country, join its national squad and fight for the trophy. 32 nations, 8 groups, one champion.</p>
+    <div class="cupwrap">
+      <div class="stat"><div><b>32</b><small>nations</small></div><div><b>8</b><small>groups</small></div></div>
+      <div class="cup" aria-label="Illustration of a golden trophy with a football on top">
+        <svg viewBox="0 0 150 200">
+          <defs>
+            <linearGradient id="gd" x1="0" x2="1"><stop offset="0" stop-color="#9c7412"/><stop offset=".45" stop-color="#f6d36b"/><stop offset="1" stop-color="#b8860b"/></linearGradient>
+            <linearGradient id="bs" x1="0" x2="1"><stop offset="0" stop-color="#0b5e2f"/><stop offset=".5" stop-color="#18a352"/><stop offset="1" stop-color="#0b5e2f"/></linearGradient>
+          </defs>
+          <circle cx="75" cy="38" r="30" fill="url(#gd)"/>
+          <path d="M75 18l9 6.5-3.5 10.5h-11L66 24.5z" fill="#7a5a0c" opacity=".55"/>
+          <path d="M47 33l9-2 5 9-6 7-9-3zM103 33l-9-2-5 9 6 7 9-3zM62 58l5-8h16l5 8-8 6h-10z" fill="#7a5a0c" opacity=".4"/>
+          <path d="M52 64c4 22 14 34 23 44 9-10 19-22 23-44-7 6-15 8-23 8s-16-2-23-8z" fill="url(#gd)"/>
+          <path d="M66 108h18l-3 30h-12z" fill="url(#gd)"/>
+          <path d="M40 160c0-12 16-22 35-22s35 10 35 22z" fill="url(#gd)"/>
+          <rect x="34" y="160" width="82" height="16" rx="3" fill="url(#bs)"/>
+          <rect x="30" y="176" width="90" height="16" rx="3" fill="url(#gd)"/>
+          <path d="M58 70c6 4 11 5 17 5" stroke="#fff6d0" stroke-width="3" fill="none" opacity=".6" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="stat"><div><b>7v7</b><small>no AI keepers</small></div><div><b>5,000</b><small>Robux for the champion</small></div></div>
+    </div>
+    <p class="countlbl" id="countLbl">Kick-off: Group A · South Korea vs Japan · Sat 28 Nov, 14:00 GMT+2</p>
+    <div class="count" id="count" aria-live="off">
+      <div><b id="cd">0</b><small>days</small></div><div><b id="ch">0</b><small>hours</small></div><div><b id="cm">0</b><small>minutes</small></div><div><b id="cs">0</b><small>seconds</small></div>
+    </div>
+    <div class="ctas">
+      <a class="btn fill" href="https://discord.gg/EQSp8vM7q">Join the Discord</a>
+      <a class="btn" href="#matches">Matchday 1 schedule</a>
+    </div>
+  </div>
+  <div class="parade" aria-hidden="true"><div class="track" id="parade"></div></div>
+</section>
+
+<section class="band" id="groups">
+  <div class="wrap">
+    <span class="kick">Group stage</span>
+    <h2>The draw</h2>
+    <p class="lede">Eight groups of four. Win 3, draw 1, loss 0 — the top two in every group go through to the Round of 16.</p>
+    <div class="groups" id="groupGrid"></div>
+    <p class="legend"><i></i>Qualification places for the Round of 16</p>
+  </div>
+</section>
+
+<section class="band md" id="matches">
+  <div class="wrap">
+    <span class="kick">Group stage · Matchday 1</span>
+    <h2>Fixtures</h2>
+    <p class="lede">The first round of the World Cup is played over one weekend. Selected games are streamed live in the Discord.</p>
+    <div class="daytabs" id="dayTabs" role="group" aria-label="Choose a day">
+      <button type="button" data-d="sat" aria-pressed="true">Saturday 28 Nov</button>
+      <button type="button" data-d="sun" aria-pressed="false">Sunday 29 Nov</button>
+    </div>
+    <div class="list" id="matchList"></div>
+    <p class="tz">All kick-off times are Israel time (GMT+2). Results appear here after each game.</p>
+  </div>
+</section>
+
+<section class="band" id="knockout">
+  <div class="wrap">
+    <span class="kick">Knockout stage</span>
+    <h2>Road to the final</h2>
+    <p class="lede">Group winners meet runners-up from the neighbouring group. From the Round of 16 on, it's win or go home.</p>
+    <div class="bracket" id="bracket"></div>
+  </div>
+</section>
+
+<section class="band prizes" id="prizes">
+  <div class="wrap">
+    <span class="kick" style="color:var(--gold2)">Rewards</span>
+    <h2>10,000 Robux on the line</h2>
+    <p class="lede">The top four nations share the prize pool. When the World Cup ends there are individual awards too.</p>
+    <div class="podium">
+      <div class="step p2"><b>2,500</b><span>2nd place</span><small>Robux</small></div>
+      <div class="step p1"><b>5,000</b><span>Champion</span><small>Robux</small></div>
+      <div class="step p3"><b>1,500</b><span>3rd place</span><small>Robux</small></div>
+      <div class="step p4"><b>1,000</b><span>4th place</span><small>Robux</small></div>
+    </div>
+    <div class="awards">
+      <div><h3>Player awards</h3>Individual awards based on player stats across the tournament.</div>
+      <div><h3>Best Lineup</h3>A World Cup Best Lineup is picked, and those players get special roles.</div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="nations">
+  <div class="wrap">
+    <span class="kick">32 nations · 6 continents</span>
+    <h2>Nations &amp; managers</h2>
+    <p class="lede">Every national team is run by a manager. Want to lead a nation? Open a ticket in #open-ticket and pick your team.</p>
+    <div class="confs" id="confs"></div>
+  </div>
+</section>
+
+<section class="band md" id="rules">
+  <div class="wrap">
+    <span class="kick">How it works</span>
+    <h2>Format &amp; rules</h2>
+    <div class="cols">
+      <div class="card"><h3>Tournament</h3><ul>
+        <li><b>7v7</b> matches, no AI goalkeepers</li>
+        <li><b>8 groups</b> of 4 — win 3, draw 1, loss 0</li>
+        <li><b>Top 2</b> in each group reach the Round of 16</li>
+        <li>World Cup–style knockout bracket to the final</li>
+        <li>Squads need <b>at least 10 players</b></li>
+        <li>Friendly matches before kick-off help staff balance the teams</li></ul></div>
+      <div class="card"><h3>Server rules</h3><ol>
+        <li>Respect everyone</li><li>No toxic behaviour</li><li>No racism or discrimination</li><li>No spamming</li>
+        <li>No inappropriate content</li><li>No advertising</li><li>Respect staff</li><li>No impersonation</li>
+        <li>No public arguments</li><li>No false accusations</li><li>Use channels correctly</li><li>Follow Discord's Terms of Service</li></ol></div>
+      <div class="card"><h3>After the World Cup</h3><ul>
+        <li><b>Nations Cup</b> — continental tournaments like UEFA, AFC Asian Cup and CONMEBOL</li>
+        <li><b>Transfer system</b> — managers will be able to buy and sell players</li>
+        <li>Live commentary, streams and video content are on the way</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="band join" id="join">
+  <div class="wrap">
+    <span class="kick" style="color:var(--gold2)">Get involved</span>
+    <h2>Help run the World Cup</h2>
+    <p class="lede">The league is looking for people behind the scenes. Application forms are in #staff-recruitment.</p>
+    <div class="cols">
+      <div class="card"><h3>League staff</h3>Help organise the tournament and look after the community.</div>
+      <div class="card"><h3>Referee team</h3>Officiate matches and keep games fair.</div>
+      <div class="card"><h3>Media team</h3>Posters, highlights, interviews and streams.</div>
+      <div class="card"><h3>Team manager</h3>Lead a national team — open a ticket and choose your country.</div>
+    </div>
+    <div class="ctas" style="justify-content:flex-start"><a class="btn fill" href="https://discord.gg/EQSp8vM7q">Join the Discord</a></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a class="logo" href="#top"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#fff"/><circle cx="20" cy="20" r="14" fill="none" stroke="#a70f20" stroke-width="3"/><path d="M6 20h28M20 6c-6 8-6 20 0 28M20 6c6 8 6 20 0 28" fill="none" stroke="#a70f20" stroke-width="2.4"/></svg>Global Nations League</a>
+    <small>Fan-run Ragdoll Soccer league on Roblox · Season 0 · Not affiliated with Roblox or FIFA</small>
+  </div>
+</footer>
+
+<script>
+{
+// flag specs: [stripe direction, colours, weights?, overlays]
+const F={
+KOR:["h",["#fff"],0,[["c",50,50,15,"#cd2e3a"],["hc",50,50,15,"#0047a0"]]],
+JPN:["h",["#fff"],0,[["c",50,50,17,"#bc002d"]]],
+GER:["h",["#000","#dd0000","#ffce00"]],
+BRA:["h",["#009c3b"],0,[["d","#ffdf00"],["c",50,50,15,"#002776"]]],
+ENG:["h",["#fff"],0,[["x",50,50,"#ce1124",10]]],
+MAR:["h",["#c1272d"],0,[["s",50,50,15,"#006233"]]],
+MEX:["v",["#006847","#fff","#ce1126"],0,[["c",50,50,7,"#8c5a2b"]]],
+QAT:["v",["#fff","#8a1538"],[1,2.4]],
+FRA:["v",["#0055a4","#fff","#ef4135"]],
+USA:["h",["#b22234","#fff","#b22234","#fff","#b22234","#fff","#b22234"],0,[["r",0,0,42,54,"#3c3b6e"]]],
+EGY:["h",["#ce1126","#fff","#000"],0,[["c",50,50,6,"#c09300"]]],
+IRQ:["h",["#ce1126","#fff","#000"],0,[["c",50,50,6,"#007a3d"]]],
+POR:["v",["#006600","#ff0000"],[2,3],[["c",40,50,13,"#ffcc00"]]],
+ARG:["h",["#74acdf","#fff","#74acdf"],0,[["c",50,50,7,"#f6b40e"]]],
+GHA:["h",["#ce1126","#fcd116","#006b3f"],0,[["s",50,50,10,"#000"]]],
+CAN:["v",["#d52b1e","#fff","#d52b1e"],[1,2,1],[["s",50,50,14,"#d52b1e"]]],
+ESP:["h",["#aa151b","#f1bf00","#aa151b"],[1,2,1]],
+URU:["h",["#fff","#0038a8","#fff","#0038a8","#fff","#0038a8","#fff","#0038a8","#fff"],0,[["r",0,0,40,56,"#fff"],["c",20,28,11,"#fcd116"]]],
+SEN:["v",["#00853f","#fdef42","#e31b23"],0,[["s",50,50,10,"#00853f"]]],
+MAS:["h",["#cc0001","#fff","#cc0001","#fff","#cc0001","#fff","#cc0001"],0,[["r",0,0,50,57,"#010066"],["c",22,28,12,"#ffcc00"],["c",26,28,10,"#010066"]]],
+NED:["h",["#ae1c28","#fff","#21468b"]],
+COL:["h",["#fcd116","#003893","#ce1126"],[2,1,1]],
+CRO:["h",["#ff0000","#fff","#171796"],0,[["r",42,30,16,30,"#ff0000"],["r",45,34,10,22,"#fff"]]],
+AUS:["h",["#00008b"],0,[["s",25,72,9,"#fff"],["s",75,30,6,"#fff"],["s",68,62,6,"#fff"],["s",85,52,4,"#fff"]]],
+ITA:["v",["#009246","#fff","#ce2b37"]],
+BEL:["v",["#000","#fdda24","#ef3340"]],
+POL:["h",["#fff","#dc143c"]],
+KSA:["h",["#006c35"],0,[["r",25,62,50,5,"#fff"]]],
+NOR:["h",["#ba0c2f"],0,[["n","#fff",16],["n","#00205b",8]]],
+SUI:["h",["#da291c"],0,[["x",50,50,"#fff",12,40]]],
+TUR:["h",["#e30a17"],0,[["c",42,50,20,"#fff"],["c",47,50,16,"#e30a17"],["s",64,50,8,"#fff"]]],
+PRK:["h",["#024fa2","#fff","#ed1c27","#fff","#024fa2"],[3,1,10,1,3],[["c",36,50,14,"#fff"],["s",36,50,11,"#ed1c27"]]]
+};
+const star=(cx,cy,r)=>{let p=[];for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?r*.42:r;p.push((cx+rr*Math.cos(a)*1.5).toFixed(1)+","+(cy+rr*Math.sin(a)).toFixed(1))}return p.join(" ")};
+const flag=(code,big)=>{const f=F[code];if(!f)return"";const[dir,cols,w,ov]=f;const ws=w||cols.map(()=>1),tot=ws.reduce((a,b)=>a+b,0);let s="",o=0;
+ cols.forEach((c,i)=>{const sz=ws[i]/tot*100;s+=dir==="h"?`<rect x="0" y="${o}" width="150" height="${sz+.5}" fill="${c}"/>`:`<rect x="${o*1.5}" y="0" width="${sz*1.5+.5}" height="100" fill="${c}"/>`;o+=sz});
+ (ov||[]).forEach(v=>{const t=v[0];
+  if(t==="c")s+=`<circle cx="${v[1]*1.5}" cy="${v[2]}" r="${v[3]}" fill="${v[4]}"/>`;
+  if(t==="hc")s+=`<path d="M${v[1]*1.5-v[3]} ${v[2]}a${v[3]} ${v[3]} 0 0 0 ${v[3]*2} 0z" fill="${v[4]}"/>`;
+  if(t==="r")s+=`<rect x="${v[1]*1.5}" y="${v[2]}" width="${v[3]*1.5}" height="${v[4]}" fill="${v[5]}"/>`;
+  if(t==="d")s+=`<polygon points="75,12 138,50 75,88 12,50" fill="${v[1]}"/>`;
+  if(t==="s")s+=`<polygon points="${star(v[1]*1.5,v[2],v[3])}" fill="${v[4]}"/>`;
+  if(t==="x"){const L=v[5]?v[5]*1.5:150,H=v[5]||100;s+=`<rect x="${75-L/2}" y="${50-v[4]/2}" width="${L}" height="${v[4]}" fill="${v[3]}"/><rect x="${75-v[4]*.75}" y="${50-H/2}" width="${v[4]*1.5}" height="${H}" fill="${v[3]}"/>`}
+  if(t==="n")s+=`<rect x="0" y="${50-v[2]/2}" width="150" height="${v[2]}" fill="${v[1]}"/><rect x="${52-v[2]*.75}" y="0" width="${v[2]*1.5}" height="100" fill="${v[1]}"/>`;});
+ return`<span class="flag${big?" lg":""}"><svg viewBox="0 0 150 100" preserveAspectRatio="none">${s}</svg></span>`};
+
+const N={KOR:["South Korea","najinha1","Asia"],JPN:["Japan","mathricee","Asia"],GER:["Germany","Namsan","Europe"],BRA:["Brazil","Raphina","South America"],
+ENG:["England","Itay","Europe"],MAR:["Morocco","thxgxxte","Africa"],MEX:["Mexico","xoiqky","North America"],QAT:["Qatar","I am not gay master","Asia"],
+FRA:["France","c.3737","Europe"],USA:["United States","Lunar","North America"],EGY:["Egypt","jdogwalkemdown","Africa"],IRQ:["Iraq","SILVALINDO","Asia"],
+POR:["Portugal","Koizy","Europe"],ARG:["Argentina","Skittlemain","South America"],GHA:["Ghana","peruzinhu","Africa"],CAN:["Canada","mirac7104","North America"],
+ESP:["Spain","blejzen","Europe"],URU:["Uruguay","notwazi","South America"],SEN:["Senegal","Joexotic","Africa"],MAS:["Malaysia","MarianScula","Asia"],
+NED:["Netherlands","gwz.","Europe"],COL:["Colombia","jackpcm_","South America"],CRO:["Croatia","BTedd","Europe"],AUS:["Australia","Rodney","Oceania"],
+ITA:["Italy","wedoalot","Europe"],BEL:["Belgium","Maiek7120","Europe"],POL:["Poland","prada","Europe"],KSA:["Saudi Arabia","bexo000","Asia"],
+NOR:["Norway","Saliba","Europe"],SUI:["Switzerland","Fre3e","Europe"],TUR:["Turkey","easypro","Europe"],PRK:["North Korea","yzxv104","Asia"]};
+const G={A:["KOR","JPN","GER","BRA"],B:["ENG","MAR","MEX","QAT"],C:["FRA","USA","EGY","IRQ"],D:["POR","ARG","GHA","CAN"],E:["ESP","URU","SEN","MAS"],F:["NED","COL","CRO","AUS"],G:["ITA","BEL","POL","KSA"],H:["NOR","SUI","TUR","PRK"]};
+// group-stage records: code: [played, won, drawn, lost] — update after each matchday
+const REC={};
+// matchday 1: [day, time (GMT+2), group, home, away, live stream?, score]
+const M=[["sat","14:00","A","KOR","JPN",1],["sat","15:00","A","GER","BRA",1],["sat","16:00","B","ENG","MAR",1],["sat","17:00","B","MEX","QAT",0],
+["sat","18:00","C","FRA","USA",0],["sat","19:00","C","EGY","IRQ",0],["sat","20:00","D","POR","ARG",0],["sat","21:00","D","GHA","CAN",0],
+["sun","14:00","E","ESP","URU",1],["sun","15:00","E","SEN","MAS",1],["sun","16:00","F","NED","COL",1],["sun","17:00","F","CRO","AUS",0],
+["sun","18:00","G","ITA","BEL",0],["sun","19:00","G","POL","KSA",0],["sun","20:00","H","NOR","SUI",0],["sun","21:00","H","TUR","PRK",0]];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+// parade of flags (duplicated for a seamless loop)
+const all=Object.keys(N);const pr=all.map(c=>`<span>${flag(c)}${esc(N[c][0])}</span>`).join("");
+document.getElementById("parade").innerHTML=pr+pr;
+
+// groups
+document.getElementById("groupGrid").innerHTML=Object.entries(G).map(([g,cs])=>{
+ const rows=cs.map((c,i)=>{const r=REC[c]||[0,0,0,0];return{c,i,p:r[0],w:r[1],d:r[2],l:r[3],pts:r[1]*3+r[2]}}).sort((a,b)=>b.pts-a.pts||a.i-b.i);
+ return`<article class="grp"><header><h3>Group</h3><b>${g}</b></header><table><thead><tr><th>Nation</th><th>P</th><th>W</th><th>D</th><th>L</th><th>Pts</th></tr></thead><tbody>`+
+ rows.map(r=>`<tr><td><span class="nat">${flag(r.c)}<span>${esc(N[r.c][0])}<small>${esc(N[r.c][1])}</small></span></span></td><td>${r.p}</td><td>${r.w}</td><td>${r.d}</td><td>${r.l}</td><td class="pts">${r.pts}</td></tr>`).join("")+`</tbody></table></article>`}).join("");
+
+// matchday
+const ml=document.getElementById("matchList");
+const drawM=d=>{ml.innerHTML=M.filter(m=>m[0]===d).map(([,t,g,h,a,live,sc])=>`<div class="row"><span class="t">${t}</span><span class="g">Group ${g}</span>
+ <span class="side">${flag(h,1)}${esc(N[h][0])}</span><span class="v">${sc?esc(sc):"vs"}</span><span class="side r">${esc(N[a][0])}${flag(a,1)}</span>
+ ${live?`<span class="live">Live stream</span>`:`<span class="nolive">No stream</span>`}</div>`).join("")};
+const dt=document.getElementById("dayTabs");
+dt.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;dt.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));drawM(b.dataset.d)});
+drawM("sat");
+
+// knockout bracket
+const R16=[["1A","2B"],["1C","2D"],["1E","2F"],["1G","2H"],["1B","2A"],["1D","2C"],["1F","2E"],["1H","2G"]];
+const lab=s=>`${s[0]==="1"?"Winner":"Runner-up"} <em>Group ${s[1]}</em>`;
+const tie=(a,b)=>`<div class="tie"><div>${a}</div><div>${b}</div></div>`;
+const cupMini=document.querySelector(".cup svg").outerHTML;
+document.getElementById("bracket").innerHTML=
+ `<div class="round"><h3>Round of 16</h3><div class="slots">${R16.map(([a,b])=>tie(lab(a),lab(b))).join("")}</div></div>`+
+ `<div class="round"><h3>Quarter-finals</h3><div class="slots">${[1,3,5,7].map(i=>tie(`Winner <em>R16-${i}</em>`,`Winner <em>R16-${i+1}</em>`)).join("")}</div></div>`+
+ `<div class="round"><h3>Semi-finals</h3><div class="slots">${[1,3].map(i=>tie(`Winner <em>QF-${i}</em>`,`Winner <em>QF-${i+1}</em>`)).join("")}</div></div>`+
+ `<div class="round final"><h3>Final</h3><div class="slots"><div><div class="cupmini">${cupMini}</div>${tie("Winner <em>SF-1</em>","Winner <em>SF-2</em>")}</div></div></div>`;
+
+// nations by continent
+const order=["Europe","Asia","South America","Africa","North America","Oceania"];
+document.getElementById("confs").innerHTML=order.map(cf=>{const cs=all.filter(c=>N[c][2]===cf);
+ return`<div class="conf"><h3>${cf}<small>${cs.length} nations</small></h3><ul>${cs.map(c=>`<li>${flag(c)}<b>${esc(N[c][0])}</b><small>${esc(N[c][1])}</small></li>`).join("")}</ul></div>`}).join("");
+
+// countdown to first kick-off (Sat 28 Nov 2026, 14:00 GMT+2)
+const KO=Date.parse("2026-11-28T14:00:00+02:00");
+const pad=n=>String(n).padStart(2,"0");
+const tick=()=>{let s=Math.max(0,Math.floor((KO-Date.now())/1000));
+ if(s===0){document.getElementById("countLbl").textContent="The World Cup is underway — follow the results below.";document.getElementById("count").hidden=true;return}
+ document.getElementById("cd").textContent=Math.floor(s/86400);document.getElementById("ch").textContent=pad(Math.floor(s%86400/3600));
+ document.getElementById("cm").textContent=pad(Math.floor(s%3600/60));document.getElementById("cs").textContent=pad(s%60);setTimeout(tick,1000)};
+tick();
+}
+</script>
+<script>
+{
+// visitor counter: counts each browser once; only the owner sees the total
+const K="https://kounter.kerolloz.dev/badge/gnl-worldcup.site.visitors";
+let owner=false;
+try{const p=new URLSearchParams(location.search);if(p.get("owner")==="gnl-itay-4419"){localStorage.setItem("gnl_owner","1");history.replaceState(null,"",location.pathname+location.hash);}owner=localStorage.getItem("gnl_owner")==="1";}catch(e){}
+if(owner){const v=document.getElementById("visits");v.hidden=false;v.innerHTML=`<img alt="total visitors" src="${K}?silent=true&label=Visitors&color=f0c64a&style=flat-square&t=${Date.now()}">`;}
+else{let seen=false;try{seen=localStorage.getItem("gnl_seen")==="1";}catch(e){}
+  if(!seen){const i=new Image();i.src=`${K}?t=${Date.now()}`;try{localStorage.setItem("gnl_seen","1");}catch(e){}}}
+}
+</script>
+</body>
+</html>
